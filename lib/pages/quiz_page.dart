@@ -4,6 +4,7 @@ import '../utils/question.dart';
 import '../utils/quiz.dart';
 import '../UI/answer_button.dart';
 import '../UI/question_text.dart';
+import '../UI/correct_wrong_overlay.dart';
 
 class QuizPage extends StatefulWidget {
   @override
@@ -18,10 +19,11 @@ class QuizPageState extends State<QuizPage> {
         new Column( // this is our main page
           children: <Widget>[
           new AnswerButton(true, () => print("You answered true.")),
-          new QuestionText(),
+          new QuestionText('Pizza is nice', 1),
           new AnswerButton(false, () => print("You answered false.")),
           ],
-        )
+        ),
+        new CorrectWrongOverlay()
       ],
     );
   }
