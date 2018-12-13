@@ -12,18 +12,57 @@ class QuizPage extends StatefulWidget {
 }
 
 class QuizPageState extends State<QuizPage> {
+  Question currentQuestion;
+  Quiz quiz = new Quiz([
+    new Question('Elon Mask is Human.', false),
+    new Question('Pizza is healthy', false),
+    new Question('Flutter is awsome', true),
+  ]);
+
+  String questionText;
+  int questionNumber;
+  bool isCorrect;
+  bool overlayShouldBeVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    currentQuestion = quiz.nextQuestion;
+    questionText = currentQuestion.question;
+    questionNumber = quiz.questionNumber;
+  }
+
+  void handleAnswer(bool answer) {
+    isCorrect = (currentQuestion.answer == answer);
+    quiz.answer(isCorrect);
+    this.setState(() {
+      overlayShouldBeVisible = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Stack(
+      fit: StackFit.expand,
       children: <Widget>[
-        new Column( // this is our main page
+        new Column(
+          // this is our main page
           children: <Widget>[
-          new AnswerButton(true, () => print("You answered true.")),
-          new QuestionText('Pizza is nice', 1),
-          new AnswerButton(false, () => print("You answered false.")),
+            new AnswerButton(true, () => handleAnswer(true)), //true button
+            new QuestionText(questionText, questionNumber),
+            new AnswerButton(false, () => handleAnswer(false)), //false button
           ],
         ),
-        new CorrectWrongOverlay()
+        overlayShouldBeVisible == true
+            ? new CorrectWrongOverlay(isCorrect, () {
+                currentQuestion = quiz.nextQuestion;
+                this.setState(() {
+                  overlayShouldBeVisible = false;
+                  questionText = currentQuestion.question;
+                  questionNumber = quiz.questionNumber;
+                });
+              })
+            : new Container()
       ],
     );
   }

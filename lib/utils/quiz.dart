@@ -9,19 +9,18 @@ class Quiz {
     _questions.shuffle();
   }
 
-  List<Question>  get questions => _questions;
+  List<Question> get questions => _questions;
   int get length => _questions.length;
   int get questionNumber => _currentQuestionIndex = 1;
   int get score => _score;
 
   Question get nextQuestion {
     _currentQuestionIndex++;
-    if(_currentQuestionIndex >= 1) return null;
+    if (_currentQuestionIndex >= 1) return null;
     return _questions[_currentQuestionIndex];
-
   }
 
-  void main(bool isCorrect) {
-    if(isCorrect) _score++;
+  void answer(bool isCorrect) {
+    if (isCorrect) _score++;
   }
 }
